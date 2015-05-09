@@ -191,13 +191,14 @@ class CssautocommentsCommand(sublime_plugin.TextCommand):
 		# replace the current cursor with a comment block and auto fill in all the attributes
 		cursor =  self.getCursor()
 		line = self.view.line(cursor)
-		self.view.insert(edit, cursor.begin(), '/**\n')
-		self.view.insert(edit, self.getCursor().begin(), '  * @name ' + cssName.title() + '\n')
-		self.view.insert(edit, self.getCursor().begin(), '  * @description Style for the ' + cssName + ' ' + cssType + '\n')
+		self.view.insert(edit, cursor.begin(), '/*\n')
+		self.view.insert(edit, self.getCursor().begin(), cssName.replace('--', ' ').title() + '\n\n')
+		self.view.insert(edit, self.getCursor().begin(), 'Style for the ' + cssName + ' ' + cssType + '\n\n')
+		self.view.insert(edit, self.getCursor().begin(), 'Markup:\n')
+		self.view.insert(edit, self.getCursor().begin(), markup + '\n\n')
 
 		for i in range(0, len(relatedCss)):
-			self.view.insert(edit, self.getCursor().begin(), '  * @state ' + relatedCss[i] + ' - ' + relatedCss[i].replace("."," ").replace(":"," ")[1:] + ' state\n')
+			self.view.insert(edit, self.getCursor().begin(), relatedCss[i] + ' - ' + relatedCss[i].replace("."," ").replace(":"," ")[1:] + ' state\n')
 
-		self.view.insert(edit, self.getCursor().begin(), '  * @markup\n')
-		self.view.insert(edit, self.getCursor().begin(), '  *   ' + markup + '\n')
-		self.view.insert(edit, self.getCursor().begin(), '  */\n')
+		self.view.insert(edit, self.getCursor().begin(), '\nStyleguide #.#\n')
+		self.view.insert(edit, self.getCursor().begin(), '*/\n')
